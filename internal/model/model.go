@@ -11,6 +11,10 @@ type Presc struct {
 	Expiration time.Time `json:"expiration"`
 }
 
+type prescs struct {
+	prescs []Presc
+}
+
 var JwtKey = []byte(os.Getenv("JWT_KEY"))
 
 type JwtToken struct {
