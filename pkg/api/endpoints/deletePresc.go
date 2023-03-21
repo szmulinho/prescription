@@ -3,7 +3,7 @@ package endpoints
 import (
 	"fmt"
 	"github.com/gorilla/mux"
-	"github.com/szmulinho/prescription/internal/model"
+	"github.com/szmulinho/prescription/pkg/model"
 	"net/http"
 )
 

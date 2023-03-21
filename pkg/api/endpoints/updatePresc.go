@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/gorilla/mux"
-	"github.com/szmulinho/prescription/internal/model"
+	"github.com/szmulinho/prescription/pkg/model"
 	"io/ioutil"
 	"net/http"
 )
@@ -19,12 +19,11 @@ func UpdatePrescription(w http.ResponseWriter, r *http.Request) {
 	}
 	json.Unmarshal(reqBody, &updatedPresc)
 
-	prescs := []model.Presc{}
-	for i, singlePresc := range prescs {
+	for i, singlePresc := range model.Prescs {
 		if singlePresc.PreId == prescPreId {
 			singlePresc.Drugs = updatedPresc.Drugs
 			singlePresc.Expiration = updatedPresc.Expiration
-			prescs = append(prescs[:i], singlePresc)
+			model.Prescs = append(model.Prescs[:i], singlePresc)
 			json.NewEncoder(w).Encode(singlePresc)
 		}
 	}

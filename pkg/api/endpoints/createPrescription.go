@@ -3,7 +3,7 @@ package endpoints
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/szmulinho/prescription/internal/model"
+	"github.com/szmulinho/prescription/pkg/model"
 	"io/ioutil"
 	"log"
 	"net/http"
@@ -24,8 +24,7 @@ func CreatePrescription(w http.ResponseWriter, r *http.Request) {
 		panic(err)
 		log.Printf("Invalid body")
 	}
-	prescs := []model.Presc{}
-	for _, singlePresc := range prescs {
+	for _, singlePresc := range model.Prescs {
 		fmt.Println(singlePresc)
 		if singlePresc.PreId == in.PreId {
 			w.WriteHeader(http.StatusConflict)
@@ -54,7 +53,7 @@ func CreatePrescription(w http.ResponseWriter, r *http.Request) {
 		Expiration: in.Expiration,
 	}
 
-	prescs = append(prescs, newPresc)
+	model.Prescs = append(model.Prescs, newPresc)
 
 	fmt.Printf("created new prescription %+v\n", in)
 	log.Printf("%+v", in)

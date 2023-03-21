@@ -11,9 +11,7 @@ type Presc struct {
 	Expiration time.Time `json:"expiration"`
 }
 
-type prescs struct {
-	prescs []Presc
-}
+var Prescs = []Presc{}
 
 var JwtKey = []byte(os.Getenv("JWT_KEY"))
 
@@ -57,8 +55,8 @@ var Drugs = []Drug{
 	},
 	{
 		DrugID: "3",
-		Name:   "cipucha",
-		Type:   "zel do pizdy",
+		Name:   "Magnefar",
+		Type:   "Suplement",
 		Price:  100,
 	},
 }

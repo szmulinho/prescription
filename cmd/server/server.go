@@ -3,8 +3,8 @@ package server
 import (
 	"fmt"
 	"github.com/gorilla/mux"
-	"github.com/szmulinho/prescription/internal/api/endpoints"
-	"github.com/szmulinho/prescription/internal/api/jwt"
+	"github.com/szmulinho/prescription/pkg/api/endpoints"
+	"github.com/szmulinho/prescription/pkg/api/jwt"
 	"log"
 	"net/http"
 )
