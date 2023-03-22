@@ -11,6 +11,12 @@ type Presc struct {
 	Expiration time.Time `json:"expiration"`
 }
 
+var prescs []CreatePrescInput
+
+var preID, expiration string
+
+var drugs []string
+
 var Prescs = []Presc{}
 
 var JwtKey = []byte(os.Getenv("JWT_KEY"))
