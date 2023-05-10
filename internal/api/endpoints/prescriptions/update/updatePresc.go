@@ -1,17 +1,17 @@
-package endpoints
+package update
 
 import (
 	"encoding/json"
 	"fmt"
 	"github.com/gorilla/mux"
-	"github.com/szmulinho/prescription/pkg/model"
+	"github.com/szmulinho/prescription/internal/model"
 	"io/ioutil"
 	"net/http"
 )
 
 func UpdatePrescription(w http.ResponseWriter, r *http.Request) {
 	prescPreId := mux.Vars(r)["id"]
-	var updatedPresc model.Presc
+	var updatedPresc model.CreatePrescInput
 
 	reqBody, err := ioutil.ReadAll(r.Body)
 	if err != nil {

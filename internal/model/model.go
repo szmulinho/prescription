@@ -2,22 +2,9 @@ package model
 
 import (
 	"os"
-	"time"
 )
 
-type Presc struct {
-	PreId      string    `json:"pre-id"`
-	Drugs      []Drug    `json:"drugs"`
-	Expiration time.Time `json:"expiration"`
-}
-
-var prescs []CreatePrescInput
-
-var preID, expiration string
-
-var drugs []string
-
-var Prescs = []Presc{}
+var Prescs []CreatePrescInput
 
 var JwtKey = []byte(os.Getenv("JWT_KEY"))
 
@@ -34,10 +21,12 @@ type Response struct {
 }
 
 type CreatePrescInput struct {
-	PreId      string    `json:"pre-id"`
-	Drugs      []string  `json:"drugs"`
-	Expiration time.Time `json:"expiration"`
+	PreId      string   `json:"pre-id"`
+	Drugs      []string `json:"drugs"`
+	Expiration string   `json:"expiration"`
 }
+
+var Prescription CreatePrescInput
 
 type Drug struct {
 	DrugID string `json:"drugID"`

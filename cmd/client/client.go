@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
+	"github.com/szmulinho/prescription/internal/model"
 	"io/ioutil"
 	"log"
 	"net/http"
@@ -14,31 +15,12 @@ type client struct {
 	client http.Client
 }
 
-type Drug struct {
-	DrugID string `json:"drugID"`
-	Name   string `json:"name"`
-	Type   string `json:"type"`
-	Price  int    `json:"price"`
-}
-
-type Presc struct {
-	PreId      string    `json:"pre-id"`
-	Drugs      []Drug    `json:"drugs"`
-	Expiration time.Time `json:"expiration"`
-}
-
-type CreatePrescInput struct {
-	PreId      string    `json:"pre-id"`
-	Drugs      []string  `json:"drugs"`
-	Expiration time.Time `json:"expiration"`
-}
-
 type JwtToken struct {
 	Token string `json:"token"`
 }
 
 func (c *client) postPrescription() {
-	newPresc := CreatePrescInput{
+	newPresc := model.CreatePrescInput{
 		PreId:      "2",
 		Drugs:      []string{"1", "3"},
 		Expiration: time.Time{},

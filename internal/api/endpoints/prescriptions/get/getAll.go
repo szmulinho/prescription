@@ -1,8 +1,8 @@
-package endpoints
+package get
 
 import (
 	"encoding/json"
-	"github.com/szmulinho/prescription/pkg/model"
+	"github.com/szmulinho/prescription/internal/model"
 	"net/http"
 )
 
