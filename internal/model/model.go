@@ -1,7 +1,11 @@
 package model
 
 import (
+	"bytes"
+	"database/sql/driver"
+	"fmt"
 	"os"
+	"strconv"
 )
 
 var Prescs []CreatePrescInput
@@ -20,54 +24,66 @@ type Response struct {
 	Data string `json:"data"`
 }
 
+type StringArray []string
+
+func (a StringArray) Value() (driver.Value, error) {
+	if len(a) == 0 {
+		return "{}", nil
+	}
+	var buf bytes.Buffer
+	buf.WriteString("{")
+	for i, s := range a {
+		if i > 0 {
+			buf.WriteString(",")
+		}
+		buf.WriteString(strconv.Quote(s))
+	}
+	buf.WriteString("}")
+	return buf.String(), nil
+}
+
+func (a *StringArray) Scan(value interface{}) error {
+	if value == nil {
+		*a = nil
+		return nil
+	}
+	s, ok := value.([]byte)
+	if !ok {
+		return fmt.Errorf("failed to unmarshal string array value: %v", value)
+	}
+	if len(s) == 0 {
+		*a = make(StringArray, 0)
+		return nil
+	}
+	s = bytes.Trim(s, "{}")
+	parts := bytes.Split(s, []byte(","))
+	res := make(StringArray, len(parts))
+	for i, p := range parts {
+		unquoted, err := strconv.Unquote(string(bytes.TrimSpace(p)))
+		if err != nil {
+			return fmt.Errorf("failed to unmarshal string array value: %v", value)
+		}
+		res[i] = unquoted
+	}
+	*a = res
+	return nil
+}
+
 type CreatePrescInput struct {
-	PreId      string   `json:"pre-id"`
-	Drugs      []string `json:"drugs"`
-	Expiration string   `json:"expiration"`
+	PreId      string      `json:"preid"`
+	Drugs      StringArray `gorm:"type:text[]" json:"drugs"`
+	Expiration string      `json:"expiration"`
 }
 
 var Prescription CreatePrescInput
 
-type Drug struct {
-	DrugID string `json:"drugID"`
-	Name   string `json:"name"`
-	Type   string `json:"type"`
-	Price  int    `json:"price"`
-}
-
-var Drugs = []Drug{
-	{
-		DrugID: "1",
-		Name:   "Apap",
-		Type:   "Painkiller",
-		Price:  10,
-	},
-	{
-		DrugID: "2",
-		Name:   "Ibuprom",
-		Type:   "Painkiller",
-		Price:  8,
-	},
-	{
-		DrugID: "3",
-		Name:   "Magnefar",
-		Type:   "Suplement",
-		Price:  100,
-	},
-}
-
 type User struct {
-	UserID   string `json:"user-id"`
-	Password string `json:"password"`
+	ID       int64  `gorm:"primaryKey;autoIncrement"`
+	Login    string `gorm:"unique"`
+	Password string
 }
 
-var Users = []User{
-	User{
-		UserID:   "user1",
-		Password: "password1",
-	},
-	User{
-		UserID:   "user2",
-		Password: "password2",
-	},
+type JwtUser struct {
+	Jwt      string "jwt"
+	Password string "password"
 }

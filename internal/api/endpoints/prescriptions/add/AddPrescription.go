@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
+	"github.com/szmulinho/prescription/database"
 	"github.com/szmulinho/prescription/internal/model"
 	"io/ioutil"
 	"log"
@@ -15,15 +16,24 @@ type errResponse struct {
 }
 
 func CreatePrescription(w http.ResponseWriter, r *http.Request) {
+
+	var newPresc model.CreatePrescInput
 	reqBody, err := ioutil.ReadAll(r.Body)
 	if err != nil {
 		panic(err)
 	}
-	err = json.Unmarshal(reqBody, &model.Prescription)
+	err = json.Unmarshal(reqBody, &newPresc)
 	if err != nil {
 		panic(err)
 		log.Printf("Invalid body")
 	}
+
+	result := database.DB.Create(&newPresc)
+	if result.Error != nil {
+		http.Error(w, result.Error.Error(), http.StatusInternalServerError)
+		return
+	}
+
 	for _, singlePresc := range model.Prescs {
 		fmt.Println(singlePresc)
 		if singlePresc.PreId == model.Prescription.PreId {
@@ -32,22 +42,7 @@ func CreatePrescription(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 	}
-	drugs := make([]model.Drug, len(model.Prescription.Drugs))
-	for i, d := range model.Prescription.Drugs {
-		exist := false
-		for _, existingDrugs := range model.Drugs {
-			if d == existingDrugs.DrugID {
-				drugs[i] = existingDrugs
-				exist = true
-			}
-		}
-		if !exist {
-			w.WriteHeader(http.StatusBadRequest)
-			json.NewEncoder(w).Encode(errResponse{Error: fmt.Sprintf("drug %model.not exist", d)})
-			return
-		}
 
-	}
 	model.Prescs = append(model.Prescs, model.Prescription)
 
 	fmt.Printf("created new prescription %+v\n", model.Prescription)

@@ -10,10 +10,10 @@ import (
 )
 
 func CreateToken(w http.ResponseWriter, r *http.Request) {
-	var user model.User
+	var user model.JwtUser
 	_ = json.NewDecoder(r.Body).Decode(&user)
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
-		"username": user.UserID,
+		"username": user.Jwt,
 		"password": user.Password,
 		"exp":      time.Now().Add(time.Hour * time.Duration(1)).Unix(),
 	})

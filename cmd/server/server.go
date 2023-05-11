@@ -9,6 +9,8 @@ import (
 	"github.com/szmulinho/prescription/internal/api/endpoints/prescriptions/delete"
 	"github.com/szmulinho/prescription/internal/api/endpoints/prescriptions/get"
 	"github.com/szmulinho/prescription/internal/api/endpoints/prescriptions/update"
+	"github.com/szmulinho/prescription/internal/api/endpoints/users/login"
+	"github.com/szmulinho/prescription/internal/api/endpoints/users/register"
 	"github.com/szmulinho/prescription/internal/api/jwt"
 	"log"
 	"net/http"
@@ -20,10 +22,12 @@ func Run() {
 	router.HandleFunc("/", endpoints.HomeLink)
 	router.HandleFunc("/presc", add.CreatePrescription).Methods("POST")
 	router.HandleFunc("/presc/{id}", get.GetOnePrescription).Methods("GET")
-	router.HandleFunc("/prescs", jwt.ValidateMiddleware(get.GetAllPrescriptions)).Methods("GET")
+	router.HandleFunc("/prescs", (get.GetAllPrescriptions)).Methods("GET")
 	router.HandleFunc("/presc/{id}", update.UpdatePrescription).Methods("PATCH")
 	router.HandleFunc("/presc/{id}", delete.DeletePrescription).Methods("DELETE")
 	router.HandleFunc("/authenticate", jwt.CreateToken).Methods("POST")
+	router.HandleFunc("/register", register.CreateUser).Methods("POST")
+	router.HandleFunc("/login", login.Login).Methods("POST")
 	cors := handlers.CORS(
 		handlers.AllowedOrigins([]string{"*"}),
 		handlers.AllowedMethods([]string{"GET", "POST", "PUT", "PATCH", "DELETE", "HEAD", "OPTIONS"}),
