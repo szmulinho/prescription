@@ -4,9 +4,8 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
-	"github.com/szmulinho/prescription/database"
+	"github.com/szmulinho/prescription/internal/database"
 	"github.com/szmulinho/prescription/internal/model"
-	"io/ioutil"
 	"log"
 	"net/http"
 )
@@ -18,12 +17,17 @@ type errResponse struct {
 func CreatePrescription(w http.ResponseWriter, r *http.Request) {
 
 	var newPresc model.CreatePrescInput
-	reqBody, err := ioutil.ReadAll(r.Body)
+
+	r.Body = http.MaxBytesReader(w, r.Body, 1048576)
+	buf := new(bytes.Buffer)
+	_, err := buf.ReadFrom(r.Body)
 	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
 		panic(err)
 	}
-	err = json.Unmarshal(reqBody, &newPresc)
+	err = json.Unmarshal(buf.Bytes(), &newPresc)
 	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
 		panic(err)
 		log.Printf("Invalid body")
 	}
@@ -36,24 +40,16 @@ func CreatePrescription(w http.ResponseWriter, r *http.Request) {
 
 	for _, singlePresc := range model.Prescs {
 		fmt.Println(singlePresc)
-		if singlePresc.PreId == model.Prescription.PreId {
+		if singlePresc.PreID == model.Prescription.PreID {
 			w.WriteHeader(http.StatusConflict)
-			json.NewEncoder(w).Encode(errResponse{Error: fmt.Sprintf("Prescription %model.already exist", model.Prescription.PreId)})
+			json.NewEncoder(w).Encode(errResponse{Error: fmt.Sprintf("Prescription %model.already exist", model.Prescription.PreID)})
 			return
 		}
 	}
 
-	model.Prescs = append(model.Prescs, model.Prescription)
-
 	fmt.Printf("created new prescription %+v\n", model.Prescription)
 	log.Printf("%+v", model.Prescription)
 	w.WriteHeader(http.StatusCreated)
-
-	client := &http.Client{}
-	reqBody, _ = json.Marshal(model.Prescription)
-	req, _ := http.NewRequest("POST", "http://localhost:8081/presc", bytes.NewBuffer(reqBody))
-	req.Header.Set("Content-Type", "application/json")
-	client.Do(req)
 
 	json.NewEncoder(w).Encode(model.Prescription)
 }

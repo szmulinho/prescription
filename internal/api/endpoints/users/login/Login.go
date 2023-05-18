@@ -2,7 +2,8 @@ package login
 
 import (
 	"encoding/json"
-	"github.com/szmulinho/prescription/database"
+	"github.com/szmulinho/prescription/internal/api/jwt"
+	"github.com/szmulinho/prescription/internal/database"
 	"github.com/szmulinho/prescription/internal/model"
 	"golang.org/x/crypto/bcrypt"
 	"net/http"
@@ -33,6 +34,30 @@ func Login(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	var isDoctor bool
+
+	if user.Role == "doctor" {
+		isDoctor = true
+	}
+
+	token, err := jwt.GenerateToken(w, r, uint(user.ID), isDoctor)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	response := struct {
+		Token string `json:"token"`
+	}{
+		Token: token,
+	}
+
+	responseJSON, err := json.Marshal(response)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
 	userJSON, err := json.Marshal(user)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
@@ -42,4 +67,5 @@ func Login(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusOK)
 	w.Write(userJSON)
+	w.Write(responseJSON)
 }

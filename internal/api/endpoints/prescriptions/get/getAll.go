@@ -2,7 +2,7 @@ package get
 
 import (
 	"encoding/json"
-	"github.com/szmulinho/prescription/database"
+	"github.com/szmulinho/prescription/internal/database"
 	"github.com/szmulinho/prescription/internal/model"
 	"net/http"
 )

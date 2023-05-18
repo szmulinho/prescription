@@ -1,3 +1,6 @@
+# github.com/dgrijalva/jwt-go v3.2.0+incompatible
+## explicit
+github.com/dgrijalva/jwt-go
 # github.com/felixge/httpsnoop v1.0.1
 ## explicit; go 1.13
 github.com/felixge/httpsnoop
@@ -36,11 +39,6 @@ github.com/jinzhu/inflection
 # github.com/jinzhu/now v1.1.5
 ## explicit; go 1.12
 github.com/jinzhu/now
-# github.com/lib/pq v1.10.9
-## explicit; go 1.13
-github.com/lib/pq
-github.com/lib/pq/oid
-github.com/lib/pq/scram
 # golang.org/x/crypto v0.8.0
 ## explicit; go 1.17
 golang.org/x/crypto/bcrypt

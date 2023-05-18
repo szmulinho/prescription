@@ -5,12 +5,18 @@ import (
 	"github.com/gorilla/mux"
 	"github.com/szmulinho/prescription/internal/model"
 	"net/http"
+	"strconv"
 )
 
 func GetOnePrescription(w http.ResponseWriter, r *http.Request) {
-	prescPreId := mux.Vars(r)["id"]
+	prescIDStr := mux.Vars(r)["id"]
+	prescID, err := strconv.ParseInt(prescIDStr, 10, 64)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
+	}
 	for _, singlePresc := range model.Prescs {
-		if singlePresc.PreId == prescPreId {
+		if singlePresc.PreID == prescID {
 			json.NewEncoder(w).Encode(singlePresc)
 		}
 	}

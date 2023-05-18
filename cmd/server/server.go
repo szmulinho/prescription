@@ -10,7 +10,6 @@ import (
 	"github.com/szmulinho/prescription/internal/api/endpoints/prescriptions/get"
 	"github.com/szmulinho/prescription/internal/api/endpoints/prescriptions/update"
 	"github.com/szmulinho/prescription/internal/api/endpoints/users/login"
-	"github.com/szmulinho/prescription/internal/api/endpoints/users/register"
 	"github.com/szmulinho/prescription/internal/api/jwt"
 	"log"
 	"net/http"
@@ -26,7 +25,16 @@ func Run() {
 	router.HandleFunc("/presc/{id}", update.UpdatePrescription).Methods("PATCH")
 	router.HandleFunc("/presc/{id}", delete.DeletePrescription).Methods("DELETE")
 	router.HandleFunc("/authenticate", jwt.CreateToken).Methods("POST")
-	router.HandleFunc("/register", register.CreateUser).Methods("POST")
+	router.HandleFunc("/generate", func(w http.ResponseWriter, r *http.Request) {
+		userID := uint(1)
+		isDoctor := true
+		token, err := jwt.GenerateToken(w, r, userID, isDoctor)
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
+		w.Write([]byte(token))
+	}).Methods("POST")
 	router.HandleFunc("/login", login.Login).Methods("POST")
 	cors := handlers.CORS(
 		handlers.AllowedOrigins([]string{"*"}),

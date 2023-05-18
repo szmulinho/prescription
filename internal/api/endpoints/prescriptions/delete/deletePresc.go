@@ -5,14 +5,21 @@ import (
 	"github.com/gorilla/mux"
 	"github.com/szmulinho/prescription/internal/model"
 	"net/http"
+	"strconv"
 )
 
 func DeletePrescription(w http.ResponseWriter, r *http.Request) {
-	var prescId = mux.Vars(r)["id"]
+	prescIDStr := mux.Vars(r)["id"]
+	prescID, err := strconv.ParseInt(prescIDStr, 10, 64)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
+	}
+
 	for i, singlePresc := range model.Prescs {
-		if singlePresc.PreId == prescId {
+		if singlePresc.PreID == prescID {
 			model.Prescs = append(model.Prescs[:i], model.Prescs[i+1:]...)
-			fmt.Fprintf(w, "The prescription with ID %v has been deleted successfully", prescId)
+			fmt.Fprintf(w, "The prescription with ID %v has been deleted successfully", prescID)
 		}
 	}
 }
