@@ -10,6 +10,8 @@ import (
 	"github.com/szmulinho/prescription/internal/api/endpoints/prescriptions/get"
 	"github.com/szmulinho/prescription/internal/api/endpoints/prescriptions/update"
 	"github.com/szmulinho/prescription/internal/api/endpoints/users/login"
+	"github.com/szmulinho/prescription/internal/api/endpoints/users/register"
+	"github.com/szmulinho/prescription/internal/api/endpoints/users/userData"
 	"github.com/szmulinho/prescription/internal/api/jwt"
 	"log"
 	"net/http"
@@ -28,7 +30,7 @@ func Run() {
 	router.HandleFunc("/generate", func(w http.ResponseWriter, r *http.Request) {
 		userID := uint(1)
 		isDoctor := true
-		token, err := jwt.GenerateToken(w, r, userID, isDoctor)
+		token, err := jwt.GenerateToken(w, r, int64(userID), isDoctor)
 		if err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
@@ -36,6 +38,8 @@ func Run() {
 		w.Write([]byte(token))
 	}).Methods("POST")
 	router.HandleFunc("/login", login.Login).Methods("POST")
+	router.HandleFunc("/register", register.CreateUser).Methods("POST")
+	router.HandleFunc("/user", userData.GetUserDataHandler).Methods("GET")
 	cors := handlers.CORS(
 		handlers.AllowedOrigins([]string{"*"}),
 		handlers.AllowedMethods([]string{"GET", "POST", "PUT", "PATCH", "DELETE", "HEAD", "OPTIONS"}),

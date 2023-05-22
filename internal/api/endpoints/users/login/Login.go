@@ -40,15 +40,14 @@ func Login(w http.ResponseWriter, r *http.Request) {
 		isDoctor = true
 	}
 
-	token, err := jwt.GenerateToken(w, r, uint(user.ID), isDoctor)
+	token, err := jwt.GenerateToken(w, r, user.ID, isDoctor)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
 
-	response := struct {
-		Token string `json:"token"`
-	}{
+	response := model.LoginResponse{
+		User:  user,
 		Token: token,
 	}
 
@@ -58,14 +57,7 @@ func Login(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	userJSON, err := json.Marshal(user)
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-		return
-	}
-
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusOK)
-	w.Write(userJSON)
 	w.Write(responseJSON)
 }

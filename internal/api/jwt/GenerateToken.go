@@ -7,7 +7,7 @@ import (
 	"time"
 )
 
-func GenerateToken(w http.ResponseWriter, r *http.Request, userID uint, isDoctor bool) (string, error) {
+func GenerateToken(w http.ResponseWriter, r *http.Request, userID int64, isDoctor bool) (string, error) {
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
 		"userID":   userID,
 		"isDoctor": isDoctor,
