@@ -23,6 +23,7 @@ func Run() {
 	router.HandleFunc("/", endpoints.HomeLink)
 	router.HandleFunc("/presc", add.CreatePrescription).Methods("POST")
 	router.HandleFunc("/presc/{id}", get.GetOnePrescription).Methods("GET")
+	router.HandleFunc("/patientpresc/{patient}", get.GetPrescriptionsForPatient).Methods("GET")
 	router.HandleFunc("/prescs", (get.GetAllPrescriptions)).Methods("GET")
 	router.HandleFunc("/presc/{id}", update.UpdatePrescription).Methods("PATCH")
 	router.HandleFunc("/presc/{id}", delete.DeletePrescription).Methods("DELETE")

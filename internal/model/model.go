@@ -22,6 +22,7 @@ type Response struct {
 
 type CreatePrescInput struct {
 	PreID      int64  `json:"preid" gorm:"primaryKey;autoIncrement"`
+	Patient    string `json:"patient"`
 	Drugs      string `gorm:"type:text[]" json:"drugs"`
 	Expiration string `json:"expiration"`
 }
