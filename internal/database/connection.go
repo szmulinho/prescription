@@ -10,7 +10,7 @@ var DB *gorm.DB
 
 func Connect() *gorm.DB {
 
-	connection, err := gorm.Open(postgres.Open("host=localhost user=postgres password=szmulinho dbname=prescription port=5432 sslmode=disable TimeZone=Europe/Warsaw"), &gorm.Config{})
+	connection, err := gorm.Open(postgres.Open("host=localhost user=postgres password=L96a1prosniper dbname=prescription port=5433 sslmode=disable TimeZone=Europe/Warsaw"), &gorm.Config{})
 
 	if err != nil {
 		panic("can't connect with database")
