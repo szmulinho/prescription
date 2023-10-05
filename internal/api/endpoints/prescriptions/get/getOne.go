@@ -3,6 +3,7 @@ package get
 import (
 	"encoding/json"
 	"github.com/gorilla/mux"
+	"github.com/szmulinho/prescription/internal/database"
 	"github.com/szmulinho/prescription/internal/model"
 	"net/http"
 	"strconv"
@@ -15,9 +16,12 @@ func GetOnePrescription(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
 	}
-	for _, singlePresc := range model.Prescs {
-		if singlePresc.PreID == PreID {
-			json.NewEncoder(w).Encode(singlePresc)
-		}
+
+	var prescription model.CreatePrescInput
+	if err := database.DB.First(&prescription, PreID).Error; err != nil {
+		http.Error(w, err.Error(), http.StatusNotFound)
+		return
 	}
+
+	json.NewEncoder(w).Encode(prescription)
 }

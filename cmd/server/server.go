@@ -16,7 +16,6 @@ import (
 func Run() {
 	router := mux.NewRouter().StrictSlash(true)
 	fmt.Println("Starting the application...")
-	router.HandleFunc("/", endpoints.HomeLink)
 	router.HandleFunc("/presc", add.CreatePrescription).Methods("POST")
 	router.HandleFunc("/presc/{id}", get.GetOnePrescription).Methods("GET")
 	router.HandleFunc("/patientpresc/{patient}", get.GetPrescriptionsForPatient).Methods("GET")

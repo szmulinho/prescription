@@ -20,10 +20,16 @@ type Response struct {
 	Data string `json:"data"`
 }
 
+type Drug struct {
+	DrugID int64  `json:"drug_id" gorm:"primaryKey;autoIncrement"`
+	Name   string `json:"name"`
+	Price  int64  `json:"price"`
+}
+
 type CreatePrescInput struct {
 	PreID      int64  `json:"preid" gorm:"primaryKey;autoIncrement"`
 	Patient    string `json:"patient"`
-	Drugs      string `gorm:"type:text[]" json:"drugs"`
+	Drugs      []Drug `json:"drugs" gorm:"many2many:prescription_drugs;"`
 	Expiration string `json:"expiration"`
 }
 
