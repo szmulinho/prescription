@@ -4,19 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="8d788e94-777f-48f3-b5c8-2f365ae40b98" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pkg/api/endpoints/Homelink.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/pkg/api/endpoints/checkPresc.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/pkg/api/endpoints/createPrescription.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/pkg/api/endpoints/deletePresc.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/pkg/api/endpoints/getAll.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/pkg/api/endpoints/getOne.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/pkg/api/endpoints/updatePresc.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/pkg/api/jwt/JWT Token.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/pkg/api/jwt/JWT Validate.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/pkg/model/model.go" beforeDir="false" />
-    </list>
+    <list default="true" id="8d788e94-777f-48f3-b5c8-2f365ae40b98" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -100,6 +88,7 @@
       <workItem from="1679482685222" duration="3630000" />
       <workItem from="1679579246217" duration="16000" />
       <workItem from="1679579823231" duration="10000" />
+      <workItem from="1696496917924" duration="21000" />
     </task>
     <servers />
   </component>

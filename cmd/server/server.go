@@ -4,14 +4,10 @@ import (
 	"fmt"
 	"github.com/gorilla/handlers"
 	"github.com/gorilla/mux"
-	"github.com/szmulinho/prescription/internal/api/endpoints"
 	"github.com/szmulinho/prescription/internal/api/endpoints/prescriptions/add"
 	"github.com/szmulinho/prescription/internal/api/endpoints/prescriptions/delete"
 	"github.com/szmulinho/prescription/internal/api/endpoints/prescriptions/get"
 	"github.com/szmulinho/prescription/internal/api/endpoints/prescriptions/update"
-	"github.com/szmulinho/prescription/internal/api/endpoints/users/login"
-	"github.com/szmulinho/prescription/internal/api/endpoints/users/register"
-	"github.com/szmulinho/prescription/internal/api/endpoints/users/userData"
 	"github.com/szmulinho/prescription/internal/api/jwt"
 	"log"
 	"net/http"
@@ -38,9 +34,6 @@ func Run() {
 		}
 		w.Write([]byte(token))
 	}).Methods("POST")
-	router.HandleFunc("/login", login.Login).Methods("POST")
-	router.HandleFunc("/register", register.CreateUser).Methods("POST")
-	router.HandleFunc("/user", userData.GetUserDataHandler).Methods("GET")
 	cors := handlers.CORS(
 		handlers.AllowedOrigins([]string{"*"}),
 		handlers.AllowedMethods([]string{"GET", "POST", "PUT", "PATCH", "DELETE", "HEAD", "OPTIONS"}),
