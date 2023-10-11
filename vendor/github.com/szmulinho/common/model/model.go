@@ -22,6 +22,10 @@ type Prescription struct {
 	Expiration string `json:"expiration"`
 }
 
+var Presc Prescription
+
+var Prescriptions []Prescription
+
 type Opinion struct {
 	ID      int64  `json:"id" gorm:"primaryKey;autoIncrement"`
 	Rating  int    `json:"rating" gorm:"column:rating"`
