@@ -1,10 +1,9 @@
-package add
+package endpoints
 
 import (
 	"bytes"
 	"encoding/json"
 	"fmt"
-	"github.com/szmulinho/prescription/internal/database"
 	"github.com/szmulinho/prescription/internal/model"
 	"log"
 	"net/http"
@@ -14,7 +13,7 @@ type errResponse struct {
 	Error string `json:"error"`
 }
 
-func CreatePrescription(w http.ResponseWriter, r *http.Request) {
+func (h *handlers) CreatePrescription(w http.ResponseWriter, r *http.Request) {
 
 	var newPresc model.CreatePrescInput
 
@@ -32,7 +31,7 @@ func CreatePrescription(w http.ResponseWriter, r *http.Request) {
 		log.Printf("Invalid body")
 	}
 
-	result := database.DB.Create(&newPresc)
+	result := h.db.Create(&newPresc)
 	if result.Error != nil {
 		http.Error(w, result.Error.Error(), http.StatusInternalServerError)
 		return

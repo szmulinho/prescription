@@ -1,15 +1,14 @@
-package get
+package endpoints
 
 import (
 	"encoding/json"
-	"github.com/szmulinho/prescription/internal/database"
 	"github.com/szmulinho/prescription/internal/model"
 	"net/http"
 )
 
-func GetAllPrescriptions(w http.ResponseWriter, r *http.Request) {
+func (h *handlers) GetAllPrescriptions(w http.ResponseWriter, r *http.Request) {
 	var prescriptions []model.CreatePrescInput
-	if err := database.DB.Find(&prescriptions).Error; err != nil {
+	if err := h.db.Find(&prescriptions).Error; err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}

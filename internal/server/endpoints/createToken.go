@@ -1,4 +1,4 @@
-package jwt
+package endpoints
 
 import (
 	"encoding/json"
@@ -9,7 +9,7 @@ import (
 	"time"
 )
 
-func CreateToken(w http.ResponseWriter, r *http.Request) {
+func (h *handlers) CreateToken(w http.ResponseWriter, r *http.Request) {
 	var user model.JwtUser
 	_ = json.NewDecoder(r.Body).Decode(&user)
 	role := "user"

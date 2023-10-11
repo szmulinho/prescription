@@ -1,15 +1,14 @@
-package delete
+package endpoints
 
 import (
 	"fmt"
 	"github.com/gorilla/mux"
-	"github.com/szmulinho/prescription/internal/database"
 	"github.com/szmulinho/prescription/internal/model"
 	"net/http"
 	"strconv"
 )
 
-func DeletePrescription(w http.ResponseWriter, r *http.Request) {
+func (h *handlers) DeletePrescription(w http.ResponseWriter, r *http.Request) {
 	prescIDStr := mux.Vars(r)["id"]
 	prescID, err := strconv.ParseInt(prescIDStr, 10, 64)
 	if err != nil {
@@ -18,13 +17,13 @@ func DeletePrescription(w http.ResponseWriter, r *http.Request) {
 	}
 
 	var existingPrescription model.CreatePrescInput
-	result := database.DB.First(&existingPrescription, prescID)
+	result := h.db.First(&existingPrescription, prescID)
 	if result.Error != nil {
 		http.Error(w, "Prescription not found", http.StatusNotFound)
 		return
 	}
 
-	result = database.DB.Delete(&existingPrescription)
+	result = h.db.Delete(&existingPrescription)
 	if result.Error != nil {
 		http.Error(w, result.Error.Error(), http.StatusInternalServerError)
 		return

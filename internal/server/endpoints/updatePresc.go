@@ -1,4 +1,4 @@
-package update
+package endpoints
 
 import (
 	"encoding/json"
@@ -10,7 +10,7 @@ import (
 	"strconv"
 )
 
-func UpdatePrescription(w http.ResponseWriter, r *http.Request) {
+func (h *handlers) UpdatePrescription(w http.ResponseWriter, r *http.Request) {
 	prescIDStr := mux.Vars(r)["id"]
 	prescID, err := strconv.ParseInt(prescIDStr, 10, 64)
 	if err != nil {
