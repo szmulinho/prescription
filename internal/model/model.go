@@ -16,39 +16,17 @@ type Exception struct {
 	Message string `json:"message"`
 }
 
-type Response struct {
-	Data string `json:"data"`
-}
-
-type Drug struct {
-	DrugID int64  `json:"drug_id" gorm:"primaryKey;autoIncrement"`
-	Name   string `json:"name"`
-	Price  int64  `json:"price"`
-}
-
 type CreatePrescInput struct {
 	PreID      int64  `json:"preid" gorm:"primaryKey;autoIncrement"`
 	Patient    string `json:"patient"`
-	Drugs      []Drug `json:"drugs" gorm:"many2many:prescription_drugs;"`
+	Drugs      string `json:"drugs" gorm:"many2many:prescription_drugs;"`
 	Expiration string `json:"expiration"`
 }
 
 var Prescription CreatePrescInput
 
-type User struct {
-	ID       int64  `gorm:"primaryKey;autoIncrement"`
-	Login    string `gorm:"unique" json:"login"`
-	Password string `json:"password"`
-	Role     string `json:"role"`
-}
-
 type JwtUser struct {
 	Jwt      string "jwt"
 	Password string "password"
 	Role     string `json:"role"`
-}
-
-type LoginResponse struct {
-	User  User   `json:"user"`
-	Token string `json:"token"`
 }

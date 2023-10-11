@@ -1,17 +1,17 @@
 FROM golang:1.21.1-alpine AS build
 
-WORKDIR /app
+WORKDIR /prescription
 COPY . .
 
 RUN apk add --no-cache git
 RUN go mod download
-RUN CGO_ENABLED=0 GOOS=linux go build -o app
+RUN CGO_ENABLED=0 GOOS=linux go build -o prescription
 
 FROM alpine:latest
 
-WORKDIR /app
-COPY --from=build /app/app /app/app
+WORKDIR /prescription
+COPY --from=build /prescription/prescription /prescription/prescription
 
 EXPOSE 8090
 
-CMD ["./app"]
+CMD ["./prescription"]
