@@ -4,6 +4,19 @@ import (
 	"os"
 )
 
+type Drugs []string
+
+type Prescription struct {
+	PreID      int64  `json:"pre_id" gorm:"primaryKey;autoIncrement"`
+	Drugs      Drugs  `gorm:"type:text[]" json:"drugs"`
+	Patient    string `json:"patient"`
+	Expiration string `json:"expiration"`
+}
+
+var Presc Prescription
+
+var Prescriptions []Prescription
+
 var JwtKey = []byte(os.Getenv("JWT_KEY"))
 
 type JwtToken struct {

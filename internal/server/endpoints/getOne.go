@@ -3,7 +3,7 @@ package endpoints
 import (
 	"encoding/json"
 	"github.com/gorilla/mux"
-	"github.com/szmulinho/common/model"
+	"github.com/szmulinho/prescription/internal/model"
 	"net/http"
 	"strconv"
 )

@@ -4,7 +4,7 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
-	"github.com/szmulinho/common/model"
+	"github.com/szmulinho/prescription/internal/model"
 	"net/http"
 )
 

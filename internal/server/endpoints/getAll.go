@@ -2,7 +2,7 @@ package endpoints
 
 import (
 	"encoding/json"
-	"github.com/szmulinho/common/model"
+	"github.com/szmulinho/prescription/internal/model"
 	"net/http"
 )
 
