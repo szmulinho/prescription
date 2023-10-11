@@ -26,9 +26,8 @@ func (h *handlers) CreatePrescription(w http.ResponseWriter, r *http.Request) {
 	}
 	err = json.Unmarshal(buf.Bytes(), &newPresc)
 	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-		panic(err)
-		log.Printf("Invalid body")
+		http.Error(w, "Invalid request body: "+err.Error(), http.StatusBadRequest)
+		return
 	}
 
 	result := h.db.Create(&newPresc)

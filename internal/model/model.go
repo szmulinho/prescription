@@ -1,7 +1,6 @@
 package model
 
 import (
-	"github.com/lib/pq"
 	"os"
 )
 
@@ -17,11 +16,13 @@ type Exception struct {
 	Message string `json:"message"`
 }
 
+type Drugs []string
+
 type CreatePrescInput struct {
-	PreID      int64          `json:"pre_id" gorm:"primaryKey;autoIncrement"`
-	Patient    string         `json:"patient"`
-	Drugs      pq.StringArray `gorm:"type:text[]" json:"drugs"` // Use pq.StringArray for PostgreSQL array type
-	Expiration string         `json:"expiration"`
+	PreID      int64  `json:"pre_id" gorm:"primaryKey;autoIncrement"`
+	Patient    string `json:"patient"`
+	Drugs      Drugs  `gorm:"type:text[]" json:"drugs"`
+	Expiration string `json:"expiration"`
 }
 
 var Prescription CreatePrescInput

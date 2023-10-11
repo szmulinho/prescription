@@ -12,6 +12,6 @@ FROM alpine:latest
 WORKDIR /prescription
 COPY --from=build /prescription/prescription /prescription/prescription
 
-EXPOSE 8090
+EXPOSE 8080
 
 CMD ["./prescription"]
