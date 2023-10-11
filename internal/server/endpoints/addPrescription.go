@@ -4,7 +4,7 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
-	"github.com/szmulinho/prescription/internal/model"
+	"github.com/szmulinho/common/model"
 	"net/http"
 )
 
@@ -52,4 +52,5 @@ func (h *handlers) AddPrescription(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusCreated)
 
 	json.NewEncoder(w).Encode(newPrescription)
+
 }
