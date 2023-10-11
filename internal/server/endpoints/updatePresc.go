@@ -2,7 +2,6 @@ package endpoints
 
 import (
 	"encoding/json"
-	"fmt"
 	"github.com/gorilla/mux"
 	"github.com/szmulinho/prescription/internal/model"
 	"io/ioutil"
@@ -18,19 +17,34 @@ func (h *handlers) UpdatePrescription(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	var updatedPresc model.CreatePrescInput
-
 	reqBody, err := ioutil.ReadAll(r.Body)
 	if err != nil {
-		fmt.Fprintf(w, "Kindly enter data with the task title and description only in order to update")
+		http.Error(w, "Kindly enter data with the drug name and price only in order to update", http.StatusBadRequest)
+		return
 	}
-	json.Unmarshal(reqBody, &updatedPresc)
 
-	for i, singlePresc := range model.Prescs {
-		if singlePresc.PreID == prescID {
-			singlePresc.Drugs = updatedPresc.Drugs
-			singlePresc.Expiration = updatedPresc.Expiration
-			model.Prescs = append(model.Prescs[:i], singlePresc)
-			json.NewEncoder(w).Encode(singlePresc)
-		}
+	err = json.Unmarshal(reqBody, &updatedPresc)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
 	}
+
+	var existingPresc model.CreatePrescInput
+	result := h.db.First(&existingPresc, prescID)
+	if result.Error != nil {
+		http.Error(w, result.Error.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	existingPresc.Patient = updatedPresc.Patient
+	existingPresc.Drugs = updatedPresc.Drugs
+	existingPresc.Expiration = updatedPresc.Expiration
+
+	result = h.db.Save(&existingPresc)
+	if result.Error != nil {
+		http.Error(w, result.Error.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	json.NewEncoder(w).Encode(existingPresc)
 }
