@@ -6,7 +6,7 @@ import (
 )
 
 type Handlers interface {
-	CreatePrescription(w http.ResponseWriter, r *http.Request)
+	AddPrescription(w http.ResponseWriter, r *http.Request)
 	CreateToken(w http.ResponseWriter, r *http.Request)
 	DeletePrescription(w http.ResponseWriter, r *http.Request)
 	GenerateToken(w http.ResponseWriter, r *http.Request, userID int64, isDoctor bool) (string, error)

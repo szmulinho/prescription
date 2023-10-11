@@ -14,7 +14,7 @@ import (
 func Run(ctx context.Context, db *gorm.DB) {
 	handler := endpoints.NewHandler(db)
 	router := mux.NewRouter().StrictSlash(true)
-	router.HandleFunc("/presc", handler.CreatePrescription).Methods("POST")
+	router.HandleFunc("/presc", handler.AddPrescription).Methods("POST")
 	router.HandleFunc("/presc/{id}", handler.GetOnePrescription).Methods("GET")
 	router.HandleFunc("/patientpresc/{patient}", handler.GetPrescriptionsForPatient).Methods("GET")
 	router.HandleFunc("/prescs", (handler.GetAllPrescriptions)).Methods("GET")

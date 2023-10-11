@@ -14,7 +14,7 @@ func main() {
 
 	db, err := database.Connect()
 	if err != nil {
-		log.Fatalf("connecting to dataabse: %v", err)
+		log.Fatalf("connecting to database: %v", err)
 	}
 
 	ctx, _, wait := utils.Gracefully()
