@@ -15,7 +15,7 @@ type errResponse struct {
 
 func (h *handlers) CreatePrescription(w http.ResponseWriter, r *http.Request) {
 
-	var newPresc model.CreatePrescInput
+	var newPresc model.Prescription
 
 	r.Body = http.MaxBytesReader(w, r.Body, 1048576)
 	buf := new(bytes.Buffer)
@@ -36,18 +36,18 @@ func (h *handlers) CreatePrescription(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	for _, singlePresc := range model.Prescs {
+	for _, singlePresc := range model.Prescriptions {
 		fmt.Println(singlePresc)
-		if singlePresc.PreID == model.Prescription.PreID {
+		if singlePresc.PreID == model.Presc.PreID {
 			w.WriteHeader(http.StatusConflict)
-			json.NewEncoder(w).Encode(errResponse{Error: fmt.Sprintf("Prescription %model.already exist", model.Prescription.PreID)})
+			json.NewEncoder(w).Encode(errResponse{Error: fmt.Sprintf("Prescription %model.already exist", model.Presc.PreID)})
 			return
 		}
 	}
 
-	fmt.Printf("created new prescription %+v\n", model.Prescription)
-	log.Printf("%+v", model.Prescription)
+	fmt.Printf("created new prescription %+v\n", model.Presc)
+	log.Printf("%+v", model.Presc)
 	w.WriteHeader(http.StatusCreated)
 
-	json.NewEncoder(w).Encode(model.Prescription)
+	json.NewEncoder(w).Encode(model.Presc)
 }

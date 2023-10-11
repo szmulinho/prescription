@@ -9,12 +9,11 @@ import (
 
 func (h *handlers) GetPrescriptionsForPatient(w http.ResponseWriter, r *http.Request) {
 	patientID := mux.Vars(r)["patient"]
-	var prescriptionsForPatient []model.CreatePrescInput
 
-	if err := h.db.Where("patient = ?", patientID).Find(&prescriptionsForPatient).Error; err != nil {
+	if err := h.db.Where("patient = ?", patientID).Find(&model.Prescriptions).Error; err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
 
-	json.NewEncoder(w).Encode(prescriptionsForPatient)
+	json.NewEncoder(w).Encode(model.Prescriptions)
 }

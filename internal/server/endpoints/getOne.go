@@ -16,7 +16,7 @@ func (h *handlers) GetOnePrescription(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	var prescription model.CreatePrescInput
+	var prescription model.Prescription
 	if err := h.db.First(&prescription, PreID).Error; err != nil {
 		http.Error(w, err.Error(), http.StatusNotFound)
 		return

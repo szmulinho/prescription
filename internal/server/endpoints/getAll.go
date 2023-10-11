@@ -7,11 +7,10 @@ import (
 )
 
 func (h *handlers) GetAllPrescriptions(w http.ResponseWriter, r *http.Request) {
-	var prescriptions []model.CreatePrescInput
-	if err := h.db.Find(&prescriptions).Error; err != nil {
+	if err := h.db.Find(&model.Prescriptions).Error; err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
 
-	json.NewEncoder(w).Encode(prescriptions)
+	json.NewEncoder(w).Encode(model.Prescriptions)
 }

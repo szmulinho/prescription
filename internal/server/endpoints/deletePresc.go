@@ -16,7 +16,7 @@ func (h *handlers) DeletePrescription(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	var existingPrescription model.CreatePrescInput
+	var existingPrescription model.Prescription
 	result := h.db.First(&existingPrescription, prescID)
 	if result.Error != nil {
 		http.Error(w, "Prescription not found", http.StatusNotFound)

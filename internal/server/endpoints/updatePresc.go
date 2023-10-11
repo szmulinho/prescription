@@ -16,7 +16,7 @@ func (h *handlers) UpdatePrescription(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
 	}
-	var updatedPresc model.CreatePrescInput
+	var updatedPresc model.Prescription
 	reqBody, err := ioutil.ReadAll(r.Body)
 	if err != nil {
 		http.Error(w, "Kindly enter data with the drug name and price only in order to update", http.StatusBadRequest)
@@ -29,7 +29,7 @@ func (h *handlers) UpdatePrescription(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	var existingPresc model.CreatePrescInput
+	var existingPresc model.Prescription
 	result := h.db.First(&existingPresc, prescID)
 	if result.Error != nil {
 		http.Error(w, result.Error.Error(), http.StatusInternalServerError)
