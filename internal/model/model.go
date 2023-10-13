@@ -1,6 +1,9 @@
 package model
 
 import (
+	"database/sql/driver"
+	"encoding/json"
+	"gorm.io/gorm"
 	"os"
 )
 
@@ -11,6 +14,20 @@ type Prescription struct {
 	Drugs      Drugs  `gorm:"type:text[]" json:"drugs"`
 	Patient    string `json:"patient"`
 	Expiration string `json:"expiration"`
+}
+
+func (d *Drugs) Scan(value interface{}) error {
+	return json.Unmarshal(value.([]byte), d)
+}
+
+func (d Drugs) Value() (driver.Value, error) {
+	return json.Marshal(d)
+}
+
+func (p *Prescription) BeforeCreate(tx *gorm.DB) error {
+	// Convert Drugs slice to PostgreSQL array
+	p.Drugs = Drugs{"Apap", "AnotherDrug"} // Example drugs
+	return nil
 }
 
 var Presc Prescription
