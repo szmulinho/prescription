@@ -16,7 +16,7 @@ func Run(ctx context.Context, db *gorm.DB) {
 	router := mux.NewRouter().StrictSlash(true)
 	router.HandleFunc("/presc", handler.AddPrescription).Methods("POST")
 	router.HandleFunc("/presc/{id}", handler.GetOnePrescription).Methods("GET")
-	router.HandleFunc("/patientpresc/{patient}", handler.GetPrescriptionsForPatient).Methods("GET")
+	router.HandleFunc("/patient/{patient}", handler.GetPrescriptionsForPatient).Methods("GET")
 	router.HandleFunc("/prescs", (handler.GetAllPrescriptions)).Methods("GET")
 	router.HandleFunc("/presc/{id}", handler.UpdatePrescription).Methods("PATCH")
 	router.HandleFunc("/presc/{id}", handler.DeletePrescription).Methods("DELETE")
@@ -40,7 +40,7 @@ func Run(ctx context.Context, db *gorm.DB) {
 		handlers.MaxAge(86400),
 	)
 	go func() {
-		err := http.ListenAndServe(fmt.Sprintf(":%s", "8080"), cors(router))
+		err := http.ListenAndServe(fmt.Sprintf(":%s", "https://szmul-med-prescription.onrender.com/"), cors(router))
 		if err != nil {
 			log.Fatal(err)
 		}

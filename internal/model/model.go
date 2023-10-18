@@ -1,33 +1,15 @@
 package model
 
 import (
-	"database/sql/driver"
-	"encoding/json"
-	"gorm.io/gorm"
+	"github.com/lib/pq"
 	"os"
 )
 
-type Drugs []string
-
 type Prescription struct {
-	PreID      int64  `json:"pre_id" gorm:"primaryKey;autoIncrement"`
-	Drugs      Drugs  `gorm:"type:text[]" json:"drugs"`
-	Patient    string `json:"patient"`
-	Expiration string `json:"expiration"`
-}
-
-func (d *Drugs) Scan(value interface{}) error {
-	return json.Unmarshal(value.([]byte), d)
-}
-
-func (d Drugs) Value() (driver.Value, error) {
-	return json.Marshal(d)
-}
-
-func (p *Prescription) BeforeCreate(tx *gorm.DB) error {
-	// Convert Drugs slice to PostgreSQL array
-	p.Drugs = Drugs{"Apap", "AnotherDrug"} // Example drugs
-	return nil
+	PreID      int64          `json:"pre_id" gorm:"primaryKey;autoIncrement"`
+	Drugs      pq.StringArray `gorm:"type:text[]" json:"drugs" sql:"type:text[]"`
+	Patient    string         `json:"patient"`
+	Expiration string         `json:"expiration"`
 }
 
 var Presc Prescription

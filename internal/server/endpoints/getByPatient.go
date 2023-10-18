@@ -8,9 +8,9 @@ import (
 )
 
 func (h *handlers) GetPrescriptionsForPatient(w http.ResponseWriter, r *http.Request) {
-	patientID := mux.Vars(r)["patient"]
+	patient := mux.Vars(r)["patient"]
 
-	if err := h.db.Where("patient = ?", patientID).Find(&model.Prescriptions).Error; err != nil {
+	if err := h.db.Where("patient = ?", patient).Find(&model.Prescriptions).Error; err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
